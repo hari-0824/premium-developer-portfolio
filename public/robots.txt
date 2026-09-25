@@ -1,0 +1,13 @@
+# Hari Hara Sudhan D — portfolio
+# Single-page site: everything worth indexing lives on /
+
+User-agent: *
+Allow: /
+
+# Note: the admin panel is a client-side hash route (#/admin/...). URL fragments
+# are never sent to a server, so robots.txt cannot (and need not) exclude it —
+# it is protected by Supabase authentication, not by obscurity.
+
+# No Sitemap line yet: a sitemap requires absolute URLs and the production
+# domain is not configured. Once it is, add:
+#   Sitemap: https://your-domain.com/sitemap.xml

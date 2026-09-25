@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <!--
+      Admin entry detection. Runs before the app bundle is parsed, so the
+      router choice is made before React (and the public homepage) exists.
+      Accepts #/admin…, #admin…, #!/admin… and normalises them to #/admin…
+      Also honours a same-origin parent frame's hash (preview wrappers).
+    -->
+    <script>
+      (function () {
+        var RX = /^#!?\/?admin(?:[\/?]|$)/i;
+        var h = location.hash;
+        try {
+          if (!RX.test(h) && window.top !== window && RX.test(window.top.location.hash)) {
+            h = window.top.location.hash;
+          }
+        } catch (e) { /* cross-origin parent: ignore */ }
+        var admin = RX.test(h);
+        if (admin) {
+          var target = "#" + h.replace(/^#!?\/?/, "/");
+          if (location.hash !== target) {
+            history.replaceState(history.state, "", location.pathname + location.search + target);
+          }
+        }
+        window.__HHS_ENTRY__ = admin ? "admin" : "public";
+      })();
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#08090C" />
+
+    <title>Hari Hara Sudhan D | Java Full Stack Developer</title>
+    <meta
+      name="description"
+      content="Hari Hara Sudhan D — Computer Science Engineering student and aspiring Java Full Stack Developer focused on Java, Spring Boot, React, AI and IoT."
+    />
+    <meta name="author" content="Hari Hara Sudhan D" />
+    <meta
+      name="keywords"
+      content="Hari Hara Sudhan, Java Full Stack Developer, Spring Boot, React, AI, IoT, ESP32, Chennai, Panimalar Engineering College"
+    />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+
+    <!--
+      Open Graph / Twitter.
+      og:url and canonical are intentionally ABSENT from static markup: the
+      production URL is not configured yet, and a placeholder canonical would
+      tell search engines to index the wrong domain. Set SITE_URL below once
+      the real domain is known and both are emitted automatically.
+    -->
+    <meta property="og:type" content="profile" />
+    <meta property="og:site_name" content="Hari Hara Sudhan D" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="profile:first_name" content="Hari Hara" />
+    <meta property="profile:last_name" content="Sudhan D" />
+    <meta property="og:title" content="Hari Hara Sudhan D | Java Full Stack Developer" />
+    <meta
+      property="og:description"
+      content="Hari Hara Sudhan D — Computer Science Engineering student and aspiring Java Full Stack Developer focused on Java, Spring Boot, React, AI and IoT."
+    />
+    <meta property="og:image" content="images/og-card.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="Hari Hara Sudhan D — Java Full Stack Developer. Java, Spring Boot, React, AI and IoT."
+    />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Hari Hara Sudhan D | Java Full Stack Developer" />
+    <meta
+      name="twitter:description"
+      content="Hari Hara Sudhan D — Computer Science Engineering student and aspiring Java Full Stack Developer focused on Java, Spring Boot, React, AI and IoT."
+    />
+    <meta name="twitter:image" content="images/og-card.jpg" />
+    <meta
+      name="twitter:image:alt"
+      content="Hari Hara Sudhan D — Java Full Stack Developer. Java, Spring Boot, React, AI and IoT."
+    />
+
+    <!-- favicon: the same HHS monogram the site header uses -->
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2308090C'/%3E%3Cpath d='M16 17v30M16 32h14M30 17v30' stroke='%235B6CFF' stroke-width='5' stroke-linecap='square' fill='none'/%3E%3Cpath d='M38 17v30M38 32h10M48 17v30' stroke='%238B99FF' stroke-width='5' stroke-linecap='square' fill='none'/%3E%3C/svg%3E"
+    />
+    <link rel="apple-touch-icon" href="images/og-card.jpg" />
+
+    <script>
+      /*
+        Social crawlers require ABSOLUTE og:image / og:url values; the tags above
+        ship relative because the production domain is unknown at build time.
+
+        → When you have the real URL, set SITE_URL (e.g. "https://hariharasudhan.dev")
+          and this emits a canonical link plus absolute OG/Twitter URLs.
+        → Left empty, it only resolves the image paths against the current origin
+          and emits no canonical, so nothing points at a domain you do not own.
+      */
+      (function () {
+        var SITE_URL = ""; // ← set your production URL here
+        try {
+          var base = SITE_URL.replace(/\/+$/, "") || location.origin;
+          var abs = function (v) {
+            return /^https?:/i.test(v) ? v : base + "/" + String(v).replace(/^\/+/, "");
+          };
+          ["og:image", "twitter:image"].forEach(function (k) {
+            var el =
+              document.querySelector('meta[property="' + k + '"]') ||
+              document.querySelector('meta[name="' + k + '"]');
+            if (el) el.setAttribute("content", abs(el.getAttribute("content")));
+          });
+          var touch = document.querySelector('link[rel="apple-touch-icon"]');
+          if (touch) touch.setAttribute("href", abs(touch.getAttribute("href")));
+
+          if (SITE_URL) {
+            var page = base + location.pathname + location.search;
+            var can = document.createElement("link");
+            can.rel = "canonical";
+            can.href = page;
+            document.head.appendChild(can);
+            var ogUrl = document.createElement("meta");
+            ogUrl.setAttribute("property", "og:url");
+            ogUrl.content = page;
+            document.head.appendChild(ogUrl);
+          }
+        } catch (e) {
+          /* metadata is best-effort — never block rendering */
+        }
+      })();
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <!--
+      Structured data (schema.org Person). Every value below already appears on
+      the page; sameAs uses the real GitHub/LinkedIn profiles so search engines
+      can connect this portfolio to them. Keep in sync if you rename yourself
+      in Admin → Profile.
+    -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Hari Hara Sudhan D",
+        "jobTitle": "Java Full Stack Developer",
+        "description": "Computer Science Engineering student passionate about Java, Full Stack Development, AI, IoT, and building practical software solutions.",
+        "affiliation": {
+          "@type": "CollegeOrUniversity",
+          "name": "Panimalar Engineering College, Chennai"
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Chennai",
+          "addressRegion": "Tamil Nadu",
+          "addressCountry": "IN"
+        },
+        "knowsAbout": [
+          "Java",
+          "Spring Boot",
+          "React",
+          "REST APIs",
+          "MySQL",
+          "Artificial Intelligence",
+          "Internet of Things"
+        ],
+        "sameAs": [
+          "https://github.com/hari-0824",
+          "https://www.linkedin.com/in/hari-hara-sudhan-d/"
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
